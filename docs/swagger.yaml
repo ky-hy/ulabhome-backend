@@ -1,0 +1,27 @@
+basePath: /v1
+host: localhost:8081
+info:
+  contact:
+    name: ulabhome
+    url: https://github.com/ky-hy/ulabhome-backend/
+  description: ulabhomeのAPIです
+  title: ulabhome API
+  version: "1.0"
+paths:
+  /healthcheck:
+    get:
+      description: ヘルスチェックを行うエンドポイント
+      responses:
+        "200":
+          description: OK
+      summary: ヘルスチェック
+      tags:
+      - 共通
+  /v1/users:
+    get:
+      description: ユーザの一覧を取得する
+      responses: {}
+      summary: ユーザ一蘭取得
+      tags:
+      - ユーザ
+swagger: "2.0"
