@@ -1,0 +1,6 @@
+.git
+.DS_Store
+.vscode
+.devcontainer
+tmp
+cover.out
