@@ -1,0 +1,65 @@
+services:
+  app:
+    container_name: ulabhome-app
+    restart: always
+    build:
+      args:
+        - target=dev
+    volumes:
+      - ./:/app
+    environment:
+      GO_ENV: development
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: admin
+      DB_PASSWORD: password
+      DB_NAME: ulabhome
+      REDIS_HOST: ulabhome-redis
+      REDIS_PORT: 6379
+      FRONT_ENDPOINT: http://localhost:3000
+    command: air
+    ports:
+      - 8081:80
+    depends_on:
+      db:
+        condition: service_healthy
+      cache:
+        condition: service_healthy
+  db:
+    image: mysql:8.0.33
+    platform: linux/amd64
+    container_name: ulabhome-db
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: ulabhome
+    volumes:
+      - ulabhome-db-data:/var/lib/mysql
+      - $PWD/_tools/mysql/conf.d:/etc/mysql/conf.d:cached
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+  cache:
+    image: "redis:latest"
+    container_name: ulabhome-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - ulabhome-redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 1s
+      timeout: 30s
+      retries: 30
+  panel:
+    image: "adminer:latest"
+    restart: always
+    ports:
+      - 8082:8080
+volumes:
+  ulabhome-db-data:
+  ulabhome-redis-data:

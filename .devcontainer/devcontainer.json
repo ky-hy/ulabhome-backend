@@ -1,0 +1,18 @@
+{
+	"name": "ulabhome-backend",
+	"dockerComposeFile": [
+		"../docker-compose.yml"
+	],
+	"service": "app",
+	"workspaceFolder": "/app",
+	"customizations": {
+		"vscode": {
+			"settings": {},
+			"extensions": [
+				"golang.go",
+				"42crunch.vscode-openapi",
+				"rangav.vscode-thunder-client"
+			]
+		}
+	}
+}
